@@ -1,6 +1,6 @@
 # Polymetis for Newer PyTorch
 
-This is a "fork" of [Monometis]([https://github.com/facebookresearch/fairo/tree/main/polymetis](https://github.com/hengyuan-hu/monometis)).
+This is a "fork" of [Monometis](https://github.com/hengyuan-hu/monometis).
 It is further developed by the Intuitive-Learning-Robots Lab to enhance their Robot handling.
 
 ## Install & Compile
