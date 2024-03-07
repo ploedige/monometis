@@ -1,9 +1,7 @@
 # Polymetis for Newer PyTorch
 
-This is a "fork" of the [Polymetis](https://github.com/facebookresearch/fairo/tree/main/polymetis).
-We made some modifications to make it easier to compile & run from scratch using newer versions
-of pytorch becasue the the original conda package only supports pytorch 1.13 and it seems no longer
-actively managed.
+This is a "fork" of [Monometis]([https://github.com/facebookresearch/fairo/tree/main/polymetis](https://github.com/hengyuan-hu/monometis)).
+It is further developed by the Intuitive-Learning-Robots Lab to enhance their Robot handling.
 
 ## Install & Compile
 
