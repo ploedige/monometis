@@ -1,3 +1,6 @@
+# !!! THIS REPO IS ARCHIVED !!!
+All further development will happen inside the [IRL Polymetis repo](https://github.com/intuitive-robots/irl_polymetis)
+
 # Polymetis for Newer PyTorch
 
 This is a "fork" of the [Polymetis](https://github.com/facebookresearch/fairo/tree/main/polymetis).
