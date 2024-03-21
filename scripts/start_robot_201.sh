@@ -14,4 +14,4 @@ then
     fi
 fi
 
-launch_robot.py ip=10.10.10.210 robot_model=franka_panda robot_model.rest_pose="[0.49158316, 0.36856688, 0.50244033, -2.17938855, -0.2963051, 2.5746603, 1.97296121]" robot_client=franka_hardware robot_client.executable_cfg.robot_ip=10.10.10.201
+launch_robot.py ip=10.10.10.210 robot_model=franka_panda robot_client=franka_hardware robot_client.executable_cfg.robot_ip=10.10.10.201
