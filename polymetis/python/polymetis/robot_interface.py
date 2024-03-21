@@ -69,6 +69,7 @@ class BaseRobotInterface:
 
     def __init__(
         self,
+        name: str = None,
         ip_address: str = "localhost",
         port: int = 50051,
         enforce_version=True,
@@ -78,6 +79,7 @@ class BaseRobotInterface:
         mirror_port: int = -1,
         mirror_metadata: DictConfig = None,
     ):
+        self.name = name
         # Create connection
         self.channel = grpc.insecure_channel(f"{ip_address}:{port}")
         self.grpc_connection = PolymetisControllerServerStub(self.channel)
