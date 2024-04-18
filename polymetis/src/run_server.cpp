@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     spdlog::info("Usage: polymetis_server [OPTION]");
     spdlog::info("Starts a controller manager server.");
     spdlog::info("  -h   Help");
-    spdlog::info("  -r   Use real-time (requires sudo)");
+    spdlog::info("  -r   Use real-time");
     spdlog::info("  -s   Change server address");
     return 0;
   }
