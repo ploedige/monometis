@@ -47,11 +47,7 @@ def main(cfg):
     server_cmd = server_cmd + ["-s", ip, "-p", port]
 
     if cfg.use_real_time:
-        log.info(f"Acquiring sudo...")
-        subprocess.run(["sudo", "echo", '"Acquired sudo."'], check=True)
-
-        sudo_prefix = ["sudo", "env", "PATH=$PATH", "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"]
-        server_cmd = sudo_prefix + server_cmd + ["-r"]
+        server_cmd += ["-r"]
 
     server_output = subprocess.Popen(
         server_cmd, stdout=sys.stdout, stderr=sys.stderr, preexec_fn=os.setpgrp
@@ -59,20 +55,9 @@ def main(cfg):
     pgid = os.getpgid(server_output.pid)
 
     # Kill process at the end
-    if cfg.use_real_time:
-
-        def cleanup():
-            log.info(
-                f"Using sudo to kill subprocess with pid {server_output.pid}, pgid {pgid}..."
-            )
-            # send NEGATIVE of process group ID to kill process tree
-            subprocess.check_call(["sudo", "kill", "-9", f"-{pgid}"])
-
-    else:
-
-        def cleanup():
-            log.info(f"Killing subprocess with pid {server_output.pid}, pgid {pgid}...")
-            subprocess.check_call(["kill", "-9", f"-{pgid}"])
+    def cleanup():
+        log.info(f"Killing subprocess with pid {server_output.pid}, pgid {pgid}...")
+        os.killpg(pgid, signal.SIGINT)
 
     atexit.register(cleanup)
     signal.signal(signal.SIGTERM, lambda signal_number, stack_frame: cleanup())
