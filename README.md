@@ -15,7 +15,7 @@ It is further developed by the Intuitive-Learning-Robots Lab to enhance their Ro
 
 ```bash
 # clone & create env
-git clone git@github.com:hengyuan-hu/monometis.git
+git clone git@github.com:intuitive-robots/irl_polymetis.git
 cd monometis/
 mamba env create -f polymetis/environment_cpu.yml
 conda activate robo
@@ -54,7 +54,7 @@ and `pytorch-cuda=11.8`.
 
 ```bash
 # clone & create *gpu* env
-git clone git@github.com:hengyuan-hu/monometis.git
+git clone git@github.com:intuitive-robots/irl_polymetis.git
 cd monometis/
 mamba env create -f polymetis/environment.yml
 conda activate robo
@@ -69,6 +69,13 @@ cd ../..
 # inside the project root
 pip install -e ./polymetis
 ```
+
+for irl users, try this cmake + downgrade mkl
+```
+conda install mkl==2024.0.0
+CUDACXX=/usr/local/cuda-12.4/bin/nvcc /usr/bin/cmake .. -DCMAKE_BUILD_TYPE=Release
+```
+
 
 ---
 
