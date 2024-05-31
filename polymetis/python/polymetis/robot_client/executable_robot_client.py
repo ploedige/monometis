@@ -68,12 +68,7 @@ class ExecutableRobotClient(AbstractRobotClient):
                 path_to_exec = which(self.executable_cfg.exec)
                 assert path_to_exec, f"Unable to find binary {self.executable_cfg.exec}"
 
-                # Add sudo if realtime; also, inherit $PATH variable
                 command_list = [path_to_exec, cfg_file.name]
-                if self.use_real_time:
-                    command_list = [
-                        "sudo", "env", "PATH=$PATH", "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-                    ] + command_list
 
                 # Run
                 log.info(f"=== Executing client at {path_to_exec} ===")

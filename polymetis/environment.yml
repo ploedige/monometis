@@ -1,4 +1,4 @@
-name: robo
+name: uha_real_robot
 channels:
   - pytorch
   - nvidia
@@ -15,6 +15,7 @@ dependencies:
     - hpp-fcl=1.6.0
     - libprotobuf=3.18.1
     - mkl-include ==2022.0.1
+    - mkl==2024.0.0
     - openmpi=2.1.2
     - pinocchio ==2.5.2
     - poco ==1.9.0 # needed by libfranka
