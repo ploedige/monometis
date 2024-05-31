@@ -14,6 +14,7 @@ dependencies:
     - grpc-cpp=1.41.1
     - hpp-fcl=1.6.0
     - libprotobuf=3.18.1
+    - mkl <=2024.0
     - mkl-include ==2022.0.1
     - openmpi=2.1.2
     - pinocchio ==2.5.2
