@@ -78,3 +78,10 @@ class RobotServerInterface(BaseServerInterface):
         if self.pgid is not None:
             self.logger.info(f"Killing subprocess with pid {self.server_output.pid}, pgid {self.pgid}...")
             os.killpg(self.pgid, signal.SIGINT)
+
+    @staticmethod
+    def stop_all_servers():
+        """stops all running robot servers.
+        """
+        command = ["pkill", "-9", "run_server"]
+        subprocess.run(command)
