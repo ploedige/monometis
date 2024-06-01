@@ -80,25 +80,13 @@ class BaseRobotInterface:
         mirror_metadata: DictConfig = None,
     ):
         self.name = name
-        # Create connection
-        self.channel = grpc.insecure_channel(f"{ip_address}:{port}")
-        self.grpc_connection = PolymetisControllerServerStub(self.channel)
+        self.ip_address = ip_address
+        self.port = port
+        self.channel = None
+        self.enforce_version = enforce_version
+        self.metadata = None
 
-        # Get metadata
-        self.metadata = (
-            mirror_metadata
-            if mirror_metadata
-            else self.grpc_connection.GetRobotClientMetadata(EMPTY)
-        )
-
-        # Check version
-        if enforce_version:
-            client_ver = polymetis.__version__
-            server_ver = self.metadata.polymetis_version
-            assert (
-                client_ver == server_ver
-            ), "Version mismatch between client & server detected! Set enforce_version=False to bypass this error."
-
+        self.mirror_metadata = mirror_metadata
         self.use_mirror_sim = use_mirror_sim
         if use_mirror_sim:
             self.mirror_sim_client = hydra.utils.instantiate(mirror_cfg.robot_client)
@@ -107,7 +95,30 @@ class BaseRobotInterface:
 
     def __del__(self):
         # Close connection in destructor
-        self.channel.close()
+        self.disconnect()
+
+    def connect(self):
+        """Connect to the server."""
+        self.channel = grpc.insecure_channel(f"{self.ip_address}:{self.port}")
+        self.grpc_connection = PolymetisControllerServerStub(self.channel)
+        self.metadata = self._get_metadata()
+        # Check version
+        if self.enforce_version:
+            client_ver = polymetis.__version__
+            server_ver = self.metadata.polymetis_version
+            assert (
+                client_ver == server_ver
+            ), "Version mismatch between client & server detected! Set enforce_version=False to bypass this error."
+
+    def _get_metadata(self):
+        if self.mirror_metadata:
+            return self.mirror_metadata
+        return self.grpc_connection.GetRobotMetadata(EMPTY)
+    
+    def disconnect(self):
+        """Disconnect from the server."""
+        if self.channel:
+            self.channel.close()
 
     @staticmethod
     def _get_msg_generator(scripted_module) -> Generator:
@@ -130,6 +141,7 @@ class BaseRobotInterface:
                 yield msg
 
         return msg_generator
+
 
     def _get_robot_state_log(
         self, log_interval: LogInterval, timeout: float = None
@@ -348,7 +360,11 @@ class RobotInterface(BaseRobotInterface):
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
+        self.time_to_go_default = time_to_go_default
+        self.use_grav_comp = use_grav_comp
 
+    def connect(self):
+        super().connect()
         with tempfile.NamedTemporaryFile("w+") as urdf_file:
             urdf_file.write(self.metadata.urdf_file)
             urdf_file.flush()
@@ -361,10 +377,6 @@ class RobotInterface(BaseRobotInterface):
         self.Kx_default = torch.Tensor(self.metadata.default_Kx)
         self.Kxd_default = torch.Tensor(self.metadata.default_Kxd)
         self.hz = self.metadata.hz
-
-        self.time_to_go_default = time_to_go_default
-
-        self.use_grav_comp = use_grav_comp
 
     def _adaptive_time_to_go(self, joint_displacement: torch.Tensor):
         """Compute adaptive time_to_go
