@@ -71,6 +71,7 @@ class BaseRobotInterface:
         self,
         name: str = None,
         ip_address: str = "localhost",
+        robot_ip: str = "localhost",
         port: int = 50051,
         enforce_version=True,
         use_mirror_sim: bool = False,
@@ -81,6 +82,7 @@ class BaseRobotInterface:
     ):
         self.name = name
         self.ip_address = ip_address
+        self.robot_ip = robot_ip
         self.port = port
         self.channel = None
         self.enforce_version = enforce_version
@@ -113,7 +115,7 @@ class BaseRobotInterface:
     def _get_metadata(self):
         if self.mirror_metadata:
             return self.mirror_metadata
-        return self.grpc_connection.GetRobotMetadata(EMPTY)
+        return self.grpc_connection.GetRobotClientMetadata(EMPTY)
     
     def disconnect(self):
         """Disconnect from the server."""
