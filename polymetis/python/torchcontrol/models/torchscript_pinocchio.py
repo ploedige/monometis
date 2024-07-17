@@ -147,7 +147,7 @@ class RobotModelPinocchio(torch.nn.Module):
         link_pos: torch.Tensor,
         link_quat: torch.Tensor,
         link_name: str = "",
-        rest_pose: torch.Tensor = None,
+        rest_pose: Optional[torch.Tensor] = None, # https://discuss.pytorch.org/t/cryptic-error-message-from-torch-jit-save/161177
         eps: float = 1e-4,
         max_iters: int = 1000,
         dt: float = 0.1,
