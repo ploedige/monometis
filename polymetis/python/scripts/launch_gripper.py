@@ -18,7 +18,7 @@ from polymetis.utils.data_dir import BUILD_DIR
 log = logging.getLogger(__name__)
 
 
-@hydra.main(config_name="launch_gripper")
+@hydra.main(config_path="../../conf", config_name="launch_gripper")
 def main(cfg):
     log.info(f"Adding {BUILD_DIR} to $PATH")
     os.environ["PATH"] = BUILD_DIR + os.pathsep + os.environ["PATH"]
