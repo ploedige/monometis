@@ -10,3 +10,4 @@ from .force_feedback_controller import ForceFeedbackController
 from .human_controller import HumanController
 from .torque_trajectory_executor import TorqueTrajectoryExecutor
 from .variable_trajectory import *
+from .extended_impedance_trajectory_executor import *
